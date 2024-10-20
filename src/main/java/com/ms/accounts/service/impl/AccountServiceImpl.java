@@ -2,6 +2,7 @@ package com.ms.accounts.service.impl;
 
 import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.entity.Account;
+import com.ms.accounts.exception.CustomerAlreadyExistsException;
 import com.ms.accounts.mapper.CustomerMapper;
 import com.ms.accounts.repository.AccountRepository;
 import com.ms.accounts.repository.CustomerRepository;
@@ -20,6 +21,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createAccount(CustomerDto customerDto) {
+        var userExists = customerRepository.existsByMobileNumber(customerDto.getMobileNumber());
+        if (userExists) throw new CustomerAlreadyExistsException("Customer with given mobile number already exists");
+
         var customer = CustomerMapper.toCustomer(customerDto);
         var savedCustomer = customerRepository.save(customer);
 

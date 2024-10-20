@@ -23,6 +23,7 @@ public class Customer extends BaseEntity {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String mobileNumber;
 
 }
