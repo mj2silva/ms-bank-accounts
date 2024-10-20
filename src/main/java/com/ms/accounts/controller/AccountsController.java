@@ -3,23 +3,27 @@ package com.ms.accounts.controller;
 import com.ms.accounts.constants.AccountConstants;
 import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.dto.ResponseDto;
+import com.ms.accounts.dto.ValidationGroups;
 import com.ms.accounts.service.AccountService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
+@Validated
 public class AccountsController {
 
     private final AccountService accountService;
 
     @PostMapping(AccountConstants.ACCOUNT_PATH)
-    public ResponseEntity<ResponseDto> createAccount(@RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> createAccount(
+            @RequestBody @Validated(ValidationGroups.CreationGroup.class) CustomerDto customerDto
+    ) {
         accountService.createAccount(customerDto);
         ResponseDto responseDto = new ResponseDto(200, AccountConstants.ACCOUNT_CREATED_MSG);
         return ResponseEntity
@@ -44,7 +48,10 @@ public class AccountsController {
     }
 
     @PutMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}")
-    public ResponseEntity<ResponseDto> updateCustomer(@PathVariable Long customerId, @RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> updateCustomer(
+            @PathVariable Long customerId,
+            @RequestBody @Validated(ValidationGroups.UpdateGroup.class) CustomerDto customerDto
+    ) {
         var updated = accountService.updateCustomer(customerId, customerDto);
         if (updated) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "Account updated")

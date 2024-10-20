@@ -1,8 +1,7 @@
 package com.ms.accounts.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Null;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -18,7 +17,9 @@ public class CustomerDto {
     private String email;
 
     @NotEmpty(message = "Mobile number should not be empty")
+    @Pattern(regexp = "^\\+?[0-9]{9,15}$", message = "Mobile number should be valid and contain between 10 to 15 digits")
     private String mobileNumber;
 
+    @Valid
     private AccountDto account;
 }

@@ -1,7 +1,6 @@
 package com.ms.accounts.service.impl;
 
 import com.ms.accounts.dto.CustomerDto;
-import com.ms.accounts.entity.Account;
 import com.ms.accounts.exception.CustomerAlreadyExistsException;
 import com.ms.accounts.exception.ResourceNotFoundException;
 import com.ms.accounts.mapper.AccountMapper;
@@ -28,10 +27,10 @@ public class AccountServiceImpl implements AccountService {
         var customer = CustomerMapper.toCustomer(customerDto);
         var savedCustomer = customerRepository.save(customer);
 
-        var customerAccount = new Account();
+        if (customerDto.getAccount() == null) return;
+
+        var customerAccount = AccountMapper.toEntity(customerDto.getAccount());
         customerAccount.setCustomerId(savedCustomer.getId());
-        customerAccount.setType("SAVINGS");
-        customerAccount.setBranchAddress("Av. Javier Prado Este 25455");
 
         accountRepository.save(customerAccount);
     }
