@@ -52,4 +52,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleGenericException(Exception ex, HttpServletRequest request) {
+        var errorResponse = new ErrorResponseDto(
+                request.getRequestURI(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
