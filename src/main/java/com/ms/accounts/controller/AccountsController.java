@@ -5,6 +5,7 @@ import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.dto.ResponseDto;
 import com.ms.accounts.dto.ValidationGroups;
 import com.ms.accounts.service.AccountService;
+import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ public class AccountsController {
 
     @PostMapping(AccountConstants.ACCOUNT_PATH)
     public ResponseEntity<ResponseDto> createAccount(
-            @RequestBody @Validated(ValidationGroups.CreationGroup.class) CustomerDto customerDto
+            @RequestBody @Validated({ValidationGroups.CreationGroup.class, Default.class}) CustomerDto customerDto
     ) {
         accountService.createAccount(customerDto);
         ResponseDto responseDto = new ResponseDto(200, AccountConstants.ACCOUNT_CREATED_MSG);
@@ -50,7 +51,7 @@ public class AccountsController {
     @PutMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}")
     public ResponseEntity<ResponseDto> updateCustomer(
             @PathVariable Long customerId,
-            @RequestBody @Validated(ValidationGroups.UpdateGroup.class) CustomerDto customerDto
+            @RequestBody @Validated({ValidationGroups.UpdateGroup.class, Default.class}) CustomerDto customerDto
     ) {
         var updated = accountService.updateCustomer(customerId, customerDto);
         if (updated) return ResponseEntity.status(HttpStatus.OK).body(
