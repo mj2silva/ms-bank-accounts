@@ -3,14 +3,15 @@ package com.ms.accounts.service.impl;
 import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.entity.Account;
 import com.ms.accounts.exception.CustomerAlreadyExistsException;
+import com.ms.accounts.exception.ResourceNotFoundException;
+import com.ms.accounts.mapper.AccountMapper;
 import com.ms.accounts.mapper.CustomerMapper;
 import com.ms.accounts.repository.AccountRepository;
 import com.ms.accounts.repository.CustomerRepository;
 import com.ms.accounts.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -33,5 +34,90 @@ public class AccountServiceImpl implements AccountService {
         customerAccount.setBranchAddress("Av. Javier Prado Este 25455");
 
         accountRepository.save(customerAccount);
+    }
+
+    @Override
+    public CustomerDto getCustomer(Long customerId) {
+        var customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Customer", "id", customerId.toString())
+                );
+
+        var account = accountRepository
+                .findByCustomerId(customer.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Account", "customer id", customer.getId().toString())
+                );
+
+        var customerDto = CustomerMapper.toCustomerDto(customer);
+        customerDto.setAccount(AccountMapper.toDto(account));
+
+        return customerDto;
+    }
+
+
+    @Override
+    public CustomerDto getCustomer(String phoneNumber) {
+        var customer = customerRepository
+                .findByMobileNumber(phoneNumber)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Customer", "mobile number", phoneNumber)
+                );
+
+        var account = accountRepository
+                .findByCustomerId(customer.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Account", "customer id", customer.getId().toString())
+                );
+
+        var customerDto = CustomerMapper.toCustomerDto(customer);
+        customerDto.setAccount(AccountMapper.toDto(account));
+
+        return customerDto;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateCustomer(Long customerId, CustomerDto customerDto) {
+
+        var existingCustomer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId.toString()));
+
+        existingCustomer.setName(customerDto.getName());
+        existingCustomer.setEmail(customerDto.getEmail());
+        existingCustomer.setMobileNumber(customerDto.getMobileNumber());
+
+        customerRepository.save(existingCustomer);
+
+        if (customerDto.getAccount() != null) {
+            var account = accountRepository.findByCustomerId(customerId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Account", "customer id", customerId.toString()));
+
+            account.setType(customerDto.getAccount().getAccountType());
+            account.setBranchAddress(customerDto.getAccount().getBranchAddress());
+
+            accountRepository.save(account);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void deleteCustomer(String phoneNumber) {
+        var customer = customerRepository
+                .findByMobileNumber(phoneNumber)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Customer", "mobile number", phoneNumber)
+                );
+
+        var account = accountRepository
+                .findByCustomerId(customer.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Account", "customer id", customer.getId().toString())
+                );
+
+        accountRepository.delete(account);
+        customerRepository.delete(customer);
     }
 }

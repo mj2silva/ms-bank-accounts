@@ -9,10 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,5 +25,36 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
+    }
+
+    @GetMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}")
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long customerId) {
+        var customer = accountService.getCustomer(customerId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customer);
+    }
+
+    @GetMapping(AccountConstants.CUSTOMER_PATH + "/phone-number/{phoneNumber}")
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable String phoneNumber) {
+        var customer = accountService.getCustomer(phoneNumber);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customer);
+    }
+
+    @PutMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}")
+    public ResponseEntity<ResponseDto> updateCustomer(@PathVariable Long customerId, @RequestBody @Valid CustomerDto customerDto) {
+        var updated = accountService.updateCustomer(customerId, customerDto);
+        if (updated) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "Account updated")
+        );
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @DeleteMapping(AccountConstants.CUSTOMER_PATH + "/phone-number/{phoneNumber}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable String phoneNumber) {
+        accountService.deleteCustomer(phoneNumber);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

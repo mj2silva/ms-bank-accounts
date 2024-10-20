@@ -15,11 +15,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Account extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Long id;
+
+    @Column(updatable = false)
     private String accountNumber;
 
+    @Column(updatable = false)
     private Long customerId;
 
-    @Column(name = "account_type")
+    @Column(name = "account_type", updatable = false)
     private String type;
 
     private String branchAddress;
