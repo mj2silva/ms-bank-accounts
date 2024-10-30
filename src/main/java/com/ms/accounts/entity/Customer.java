@@ -1,5 +1,6 @@
 package com.ms.accounts.entity;
 
+import com.ms.restUtilities.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.ms.accounts.dto;
+package com.ms.restUtilities.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

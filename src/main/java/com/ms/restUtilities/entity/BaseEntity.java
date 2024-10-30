@@ -1,4 +1,4 @@
-package com.ms.accounts.entity;
+package com.ms.restUtilities.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

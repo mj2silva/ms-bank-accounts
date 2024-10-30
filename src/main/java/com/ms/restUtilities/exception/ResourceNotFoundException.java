@@ -1,4 +1,4 @@
-package com.ms.accounts.exception;
+package com.ms.restUtilities.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

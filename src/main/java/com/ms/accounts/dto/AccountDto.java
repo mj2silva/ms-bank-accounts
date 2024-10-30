@@ -1,5 +1,6 @@
 package com.ms.accounts.dto;
 
+import com.ms.restUtilities.dto.ValidationGroups;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Null;
 import lombok.Data;

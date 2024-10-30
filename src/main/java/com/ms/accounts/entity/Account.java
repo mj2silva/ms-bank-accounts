@@ -1,5 +1,6 @@
 package com.ms.accounts.entity;
 
+import com.ms.restUtilities.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true, nullable = false)
     private String accountNumber;
 
     @Column(updatable = false)

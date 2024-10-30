@@ -1,6 +1,7 @@
 package com.ms.accounts.exception;
 
-import com.ms.accounts.dto.ErrorResponseDto;
+import com.ms.restUtilities.dto.ErrorResponseDto;
+import com.ms.restUtilities.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

@@ -2,7 +2,7 @@ package com.ms.accounts.service.impl;
 
 import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.exception.CustomerAlreadyExistsException;
-import com.ms.accounts.exception.ResourceNotFoundException;
+import com.ms.restUtilities.exception.ResourceNotFoundException;
 import com.ms.accounts.mapper.AccountMapper;
 import com.ms.accounts.mapper.CustomerMapper;
 import com.ms.accounts.repository.AccountRepository;
