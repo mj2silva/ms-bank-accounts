@@ -2,18 +2,18 @@ package com.ms.accounts.service.impl;
 
 import com.ms.accounts.dto.CustomerDto;
 import com.ms.accounts.exception.CustomerAlreadyExistsException;
-import com.ms.restUtilities.exception.ResourceNotFoundException;
 import com.ms.accounts.mapper.AccountMapper;
 import com.ms.accounts.mapper.CustomerMapper;
 import com.ms.accounts.repository.AccountRepository;
 import com.ms.accounts.repository.CustomerRepository;
 import com.ms.accounts.service.AccountService;
-import lombok.AllArgsConstructor;
+import com.ms.restUtilities.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;

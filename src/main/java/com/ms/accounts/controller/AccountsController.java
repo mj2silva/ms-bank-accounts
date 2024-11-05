@@ -2,11 +2,11 @@ package com.ms.accounts.controller;
 
 import com.ms.accounts.constants.AccountConstants;
 import com.ms.accounts.dto.CustomerDto;
+import com.ms.accounts.service.AccountService;
 import com.ms.restUtilities.dto.ResponseDto;
 import com.ms.restUtilities.dto.ValidationGroups;
-import com.ms.accounts.service.AccountService;
 import jakarta.validation.groups.Default;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 public class AccountsController {
 
