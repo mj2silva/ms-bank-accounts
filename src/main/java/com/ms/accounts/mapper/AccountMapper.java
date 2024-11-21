@@ -5,6 +5,8 @@ import com.ms.accounts.entity.Account;
 
 public class AccountMapper {
     public static AccountDto toDto(Account account) {
+        if (account == null) return null;
+
         AccountDto accountDto = new AccountDto();
         accountDto.setId(account.getId());
         accountDto.setAccountNumber(account.getAccountNumber());
@@ -15,6 +17,8 @@ public class AccountMapper {
     }
 
     public static Account toEntity(AccountDto accountDto) {
+        if (accountDto == null) return null;
+
         Account account = new Account();
         account.setId(accountDto.getId());
         account.setAccountNumber(accountDto.getAccountNumber());

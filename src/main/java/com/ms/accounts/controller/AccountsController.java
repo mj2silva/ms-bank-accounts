@@ -32,7 +32,7 @@ public class AccountsController {
                 .body(responseDto);
     }
 
-    @GetMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}")
+    @GetMapping(AccountConstants.CUSTOMER_PATH + "/{customerId}/accounts")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long customerId) {
         var customer = accountService.getCustomer(customerId);
         return ResponseEntity
@@ -40,7 +40,7 @@ public class AccountsController {
                 .body(customer);
     }
 
-    @GetMapping(AccountConstants.CUSTOMER_PATH + "/phone-number/{phoneNumber}")
+    @GetMapping(AccountConstants.CUSTOMER_PATH + "/phone-number/{phoneNumber}/accounts")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable String phoneNumber) {
         var customer = accountService.getCustomer(phoneNumber);
         return ResponseEntity
