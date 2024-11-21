@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS customer (
+CREATE TABLE IF NOT EXISTS customers (
     customer_id serial PRIMARY KEY,
     name varchar(100) NOT NULL,
     email varchar(100) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS customer (
     updated_by varchar(20) DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS account (
+CREATE TABLE IF NOT EXISTS accounts (
     account_id serial PRIMARY KEY,
     customer_id int NOT NULL,
     account_number varchar(20) NOT NULL UNIQUE,
