@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "loans", path = "/api/v1")
+@FeignClient(name = "loans", path = "/api/v1", fallback = LoansFallback.class)
  public interface LoansFeignClient {
 
     @PostMapping("/customers/{customerId}]/loans")

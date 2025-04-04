@@ -18,6 +18,10 @@ spring:
   sql:
     init:
       mode: always
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
 management:
   endpoints:
