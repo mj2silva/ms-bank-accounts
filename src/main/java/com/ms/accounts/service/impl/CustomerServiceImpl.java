@@ -35,26 +35,29 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDetailsDto getCustomerDetails(String mobileNumber) {
         var customer = customerRepository
                 .findByMobileNumber(mobileNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));;
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
         return getCustomerDetails(customer);
     }
 
     private CustomerDetailsDto getCustomerDetails(Customer customer) {
-
         var customerId = customer.getId();
         var account = accountRepository.findByCustomerId(customerId).orElse(null);
+
+        var customerDetailsDto = CustomerMapper.toCustomerDetailsDto(customer);
+        customerDetailsDto.setAccount(AccountMapper.toDto(account));
 
         var cardsResponse = cardsFeignClient.getCustomerCards(customerId);
         var loansResponse = loansFeignClient.getCustomerLoans(customerId);
 
-        var cards = cardsResponse.getStatusCode() == HttpStatus.OK ? cardsResponse.getBody() : null;
-        var loans = loansResponse.getStatusCode() == HttpStatus.OK ? loansResponse.getBody() : null;
+        if (cardsResponse != null) {
+            var cards = cardsResponse.getStatusCode() == HttpStatus.OK ? cardsResponse.getBody() : null;
+            customerDetailsDto.setCards(cards);
+        }
 
-        CustomerDetailsDto customerDetailsDto = CustomerMapper.toCustomerDetailsDto(customer);
-
-        customerDetailsDto.setAccount(AccountMapper.toDto(account));
-        customerDetailsDto.setLoans(loans);
-        customerDetailsDto.setCards(cards);
+        if (loansResponse != null) {
+            var loans = loansResponse.getStatusCode() == HttpStatus.OK ? loansResponse.getBody() : null;
+            customerDetailsDto.setLoans(loans);
+        }
 
         return customerDetailsDto;
     }
